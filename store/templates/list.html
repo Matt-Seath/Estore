@@ -8,12 +8,9 @@
   </head>
   <body>
     <h2>You Suck</h2>
-    {{ count }}
     <ul>
-      {% for order in orders %}
-      <li>{{ order.id }} - {{ order.customer.first_name }}</li>
-      {% endfor %} {% for customer in customers %}
-      <li>{{ customer.full_name }}</li>
+      {% for product in products %}
+      <li>{{ product.id}} - {{ product.title }}</li>
       {% endfor %}
     </ul>
   </body>

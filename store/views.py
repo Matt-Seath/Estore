@@ -5,14 +5,14 @@ from tags.models import TaggedItem
 # Create your views here.
 
 def list(request):
-    content_type = ContentType.objects.get_for_model(Product)
 
+    content = ContentType.objects.get_for_model(Product)
+    
     queryset = TaggedItem.objects \
         .select_related("tag") \
         .filter(
-            content_type=content_type,
+            content_type=content,
             object_id=1
         )
 
-
-    return render(request, "list.html", {"tags": queryset})
+    return render(request, "list.html", {"products": queryset})
