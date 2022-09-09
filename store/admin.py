@@ -1,15 +1,18 @@
-from sre_constants import SUCCESS
 from django.contrib import admin, messages
 from django.db.models import Count
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.http import urlencode
+
 from . import models
 
 
 
 
 # Register your models here.
+
+
+
 class InventoryFilter(admin.SimpleListFilter):
     title = "inventory"
     parameter_name: str = "inventory"
@@ -29,6 +32,7 @@ class InventoryFilter(admin.SimpleListFilter):
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
+    search_fields = ["title"]
     autocomplete_fields = ["collection"]
     prepopulated_fields = {
         "slug": ["title"]
@@ -106,8 +110,16 @@ class CollectionAdmin(admin.ModelAdmin):
             .annotate(products_count=Count("product"))
 
 
+class OrderItemInline(admin.TabularInline):
+    autocomplete_fields = ["product"]
+    model = models.OrderItem
+    min_num = 1
+    extra = 0
+
+
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
+    inlines = [OrderItemInline]
     autocomplete_fields = ["customer"]
     list_display = ["id", "customer", "placed_at", "payment_status"]
     list_editable = ["payment_status"]

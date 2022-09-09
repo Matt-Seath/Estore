@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'store',
     'tags',
     'likes',
+    'join_apps',
 ]
 
 MIDDLEWARE = [
