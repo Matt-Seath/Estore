@@ -1,4 +1,5 @@
-from django.contrib import admin
+from sre_constants import SUCCESS
+from django.contrib import admin, messages
 from django.db.models import Count
 from django.urls import reverse
 from django.utils.html import format_html
@@ -15,16 +16,24 @@ class InventoryFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return [
-            ("<10", "Low")     
+            ("<10", "Low"),
+            ("0", "None") 
         ]
     
     def queryset(self, request, queryset):
         if self.value() == "<10":
             return queryset.filter(inventory__lt=10)
+        if self.value() == "0":
+            return queryset.filter(inventory__lte=0)
 
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
+    autocomplete_fields = ["collection"]
+    prepopulated_fields = {
+        "slug": ["title"]
+    }
+    actions = ["clear_inventory"]
     list_display = ["title", "unit_price", "inventory_status", "collection_title"]
     list_editable = ["unit_price"]
     list_per_page: int = 20
@@ -34,15 +43,27 @@ class ProductAdmin(admin.ModelAdmin):
     @admin.display(ordering="inventory")
     def inventory_status(self, product):
         if product.inventory < 10:
+            if product.inventory <= 0:
+                return "None"
             return "Low"
         return "OK"
 
     def collection_title(self, product):
         return product.collection.title
 
+    @admin.action(description="Clear Inventory")
+    def clear_inventory(self, request, queryset):
+        updated_count = queryset.update(inventory=0)
+        self.message_user(
+            request,
+            f"{updated_count} products were successfully updated.",
+            messages.SUCCESS
+        )
+
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
+    search_fields = ["first_name", "last_name"]
     list_display = ["first_name", "last_name", "membership", "orders_count"]
     list_editable = ["membership"]
     list_per_page: int = 20
@@ -66,6 +87,7 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
+    search_fields = ["title"]
     list_display = ["title", "products_count"]
     list_per_page: int = 20
 
@@ -86,6 +108,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
+    autocomplete_fields = ["customer"]
     list_display = ["id", "customer", "placed_at", "payment_status"]
     list_editable = ["payment_status"]
     list_per_page: int = 20
