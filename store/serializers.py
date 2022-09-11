@@ -11,6 +11,12 @@ class CollectionSerializer(serializers.ModelSerializer):
     products_count = serializers.IntegerField()
 
 
+class PostCollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection
+        fields = ["title"]
+
+
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
