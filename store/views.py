@@ -1,18 +1,20 @@
-from django.shortcuts import render
-from store.models import Product
-from django.contrib.contenttypes.models import ContentType
-from tags.models import TaggedItem
-# Create your views here.
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Product
+from .serializers import ProductSerializer
+from rest_framework import status
 
-def list(request):
 
-    content = ContentType.objects.get_for_model(Product)
-    
-    queryset = TaggedItem.objects \
-        .select_related("tag") \
-        .filter(
-            content_type=content,
-            object_id=1
-        )
+@api_view()
+def product_list(request):
+    queryset = Product.objects.all()
+    serializer = ProductSerializer(queryset, many=True)
+    return  Response(serializer.data)
 
-    return render(request, "list.html", {"products": queryset})
+@api_view()
+def product_detail(request, id):
+    product = get_object_or_404(Product, pk=id)
+    serializer = ProductSerializer(product)
+    return Response(serializer.data)
