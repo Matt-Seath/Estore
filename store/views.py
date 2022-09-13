@@ -1,18 +1,24 @@
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from django.db.models import Count
 from .models import Product, Collection, OrderItem, Review
+from .filters import ProductFilter
 from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer
 from rest_framework import status
 
 
+
+
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.select_related("collection").all()
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProductFilter
 
     def get_serializer_context(self):
         return {"request": self.request}
@@ -24,6 +30,13 @@ class ProductViewSet(ModelViewSet):
                 status=status.HTTP_405_METHOD_NOT_ALLOWED
             )
         return super().destroy(request, *args, **kwargs)
+
+    # def get_queryset(self):
+    #     queryset = Product.objects.all()
+    #     collection_id = self.request.query_params.get("collection_id")
+    #     if collection_id is not None:
+    #         queryset = queryset.filter(collection_id=collection_id)
+    #     return queryset
 
 
 class CollectionViewSet(ModelViewSet):
