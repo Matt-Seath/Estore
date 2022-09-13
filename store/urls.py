@@ -1,8 +1,8 @@
 from django.urls import path, include
-from rest_framework.routers import SimpleRouter
+from rest_framework.routers import DefaultRouter
 from . import views
 
-router = SimpleRouter()
+router = DefaultRouter()
 router.register("products", views.ProductViewSet)
 router.register("collections", views.CollectionViewSet)
 
@@ -13,3 +13,4 @@ urlpatterns = router.urls
 #     # path('collections/', views.CollectionList.as_view()),
 #     # path('collections/<int:pk>/', views.CollectionDetails.as_view(), name="collection-detail"),
 # ]
+    
