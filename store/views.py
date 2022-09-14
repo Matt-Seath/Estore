@@ -4,11 +4,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.viewsets import ModelViewSet
-from .models import Product, Collection, OrderItem, Review
 from .pagination import DefaultPagination
 from .filters import ProductFilter
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer
-
+from .serializers import *
+from .models import *
 
 
 
@@ -49,6 +48,11 @@ class CollectionViewSet(ModelViewSet):
         if Product.objects.filter(collection_id=kwargs["pk"]).count() > 0:
             return Response({"error": "Collection cannot be deleted while products exist within it"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         return super().destroy(request, *args, **kwargs)
+
+
+class CartViewSet(ModelViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
 
 
 class ReviewViewSet(ModelViewSet):
