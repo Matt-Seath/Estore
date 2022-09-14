@@ -51,20 +51,21 @@ class CollectionViewSet(ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
 
-class CartViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
+class CartViewSet(CreateModelMixin, 
+                  RetrieveModelMixin, 
+                  DestroyModelMixin, 
+                  GenericViewSet):
     queryset = Cart.objects.prefetch_related('items__product').all()
     serializer_class = CartSerializer
 
 
 class CartItemViewSet(ModelViewSet):
-    queryset = CartItem.objects.all()
     serializer_class = CartItemSerializer
 
     def get_queryset(self):
-        return CartItem.objects.filter(cart_id=self.kwargs["cart_pk"])
-
-    def get_serializer_context(self):
-        return {"cart_id": self.kwargs["cart_pk"]}
+        return CartItem.objects \
+            .filter(cart_id=self.kwargs["cart_pk"]) \
+            .select_related("product")
 
 
 class ReviewViewSet(ModelViewSet):
