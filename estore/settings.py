@@ -152,4 +152,11 @@ SIMPLE_JWT = {
 }
 
 
+DJOSER = {
+    "SERIALIZERS": {
+        "user_create": "core.serializers.CustomUserCreateSerializer"
+    },
+}
+
+
 AUTH_USER_MODEL = "core.User"
