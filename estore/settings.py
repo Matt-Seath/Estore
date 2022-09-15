@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'store',
     'tags',
     'likes',
-    'join_apps',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +141,5 @@ REST_FRAMEWORK = {
     "COERCE_DECIMAL_TO_STRING": False,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
+
+AUTH_USER_MODEL = "core.User"
