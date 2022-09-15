@@ -95,6 +95,9 @@ class Order(models.Model):
 
     class Meta:
         ordering = ["placed_at"]
+        permissions = [
+             ("cancel_order", "Can cancel order")
+        ]
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
