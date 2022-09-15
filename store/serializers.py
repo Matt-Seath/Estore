@@ -3,6 +3,14 @@ from decimal import Decimal
 from .models import *
 
 
+class CustomerSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField()
+
+    class Meta:
+        model = Customer
+        fields = ["id", "user_id", "phone", "dob", "membership"]
+
+
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection

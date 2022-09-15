@@ -1,14 +1,24 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Count
 from rest_framework import status
-from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, RetrieveModelMixin
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.mixins import (
+                                CreateModelMixin, 
+                                DestroyModelMixin, 
+                                RetrieveModelMixin, 
+                                UpdateModelMixin)
+
 from .pagination import DefaultPagination
 from .filters import ProductFilter
 from .serializers import *
 from .models import *
+
+
+class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+    queryset =Customer.objects.all()
+    serializer_class = CustomerSerializer
 
 
 
