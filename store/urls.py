@@ -7,6 +7,7 @@ router.register("products", views.ProductViewSet, basename="products")
 router.register("collections", views.CollectionViewSet)
 router.register("cart", views.CartViewSet)
 router.register("customer", views.CustomerViewSet)
+router.register("order", views.OrderViewSet, basename="order")
 
 products_router = routers.NestedDefaultRouter(router, "products", lookup="product")
 products_router.register("reviews", views.ReviewViewSet, basename="product-reviews")

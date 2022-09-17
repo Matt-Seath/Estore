@@ -105,6 +105,11 @@ class CartItemViewSet(ModelViewSet):
             .select_related("product")
 
 
+class OrderViewSet(ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
 
