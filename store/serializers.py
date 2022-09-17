@@ -3,6 +3,8 @@ from decimal import Decimal
 from .models import *
 
 
+
+
 class CustomerSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField()
 
