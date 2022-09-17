@@ -150,6 +150,12 @@ class CreateOrderSerializer(serializers.Serializer):
             return order
         
 
+class UpdateOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ["payment_status"]
+
+
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
