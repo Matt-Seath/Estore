@@ -41,6 +41,16 @@ class SimpleProductSerializer(serializers.ModelSerializer):
         fields = ["id", "title", "unit_price"]
 
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        product_id = self.context["product_id"]
+        return ProductImage.objects.create(product_id=product_id, **validated_data)
+
+    class Meta:
+        model = ProductImage
+        fields = ["id", "image"]
+
+
 class CartItemSerializer(serializers.ModelSerializer):
     product = SimpleProductSerializer()
     total_price = serializers.SerializerMethodField(method_name="calculate_total_price")
