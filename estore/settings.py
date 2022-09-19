@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'tags',
     'likes',
     'core',
+    'mail',
 ]
 
 MIDDLEWARE = [
@@ -186,3 +187,7 @@ EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
 EMAIL_PORT = 2525
 DEFAULT_FROM_EMAIL = "seath@gmail.com"
+
+ADMINS = [
+    ("Seath", "seath.dev@gmail.com")
+]
