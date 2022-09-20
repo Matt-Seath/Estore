@@ -191,3 +191,5 @@ DEFAULT_FROM_EMAIL = "seath@gmail.com"
 ADMINS = [
     ("Seath", "seath.dev@gmail.com")
 ]
+
+CELERY_BROKER_URL = "redis://localhost:6379/1"
