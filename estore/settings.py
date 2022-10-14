@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'corsheaders',
     'djoser',
+    'silk',
     'store',
     'frontend',
     'tags',
@@ -64,6 +65,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE += [
+        'silk.middleware.SilkyMiddleware',
+    ]
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -199,5 +205,16 @@ CELERY_BEAT_SCHEDULE = {
         "task": "mail.tasks.notify_customers",
         "schedule": 5,
         "args": ["Testing Stuff"],
+    }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/2",
+        "TIMEOUT": 10 * 60,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     }
 }
