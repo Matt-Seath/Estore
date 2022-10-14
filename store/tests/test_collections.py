@@ -1,5 +1,6 @@
 import pytest
 from rest_framework import status
+from store.models import Collection
 
 
 @pytest.fixture
@@ -61,3 +62,7 @@ class TestDeleteCollection:
         assert response.status_code == status.HTTP_403_FORBIDDEN
  
 
+
+class TestRetrieveCollection:
+    def test_if_collection_exists_returns_200(self, api_client):
+        Collection.objects.create(title) 
