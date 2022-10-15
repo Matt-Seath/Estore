@@ -9,6 +9,9 @@ media
 # Node
 node_modules/
 
+#Static
+/static/
+
 # Backup files # 
 *.bak 
 
